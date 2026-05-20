@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
@@ -111,6 +111,13 @@ function Login() {
           Ingresar
           
         </button>
+
+       <Link
+          to="/"
+          className="back-home-btn"
+        >
+          ← Volver al inicio
+        </Link>
 
       </form>
 

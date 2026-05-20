@@ -590,17 +590,105 @@ router.post(
         extras
       } = req.body;
 
-      const room =
+      /* =========================
+         VALIDACIONES
+      ========================= */
+
+      if (
+        !id_usuario ||
+        !id_hotel ||
+        !num_hab ||
+        !fecha_inicio ||
+        !fecha_fin ||
+        !estado
+      ) {
+
+        return res.status(400).json({
+
+          message:
+            "Todos los campos son obligatorios"
+
+        });
+
+      }
+
+      if (
+        fecha_fin <= fecha_inicio
+      ) {
+
+        return res.status(400).json({
+
+          message:
+            "La fecha final debe ser mayor"
+
+        });
+
+      }
+
+      /* =========================
+         VALIDAR DISPONIBILIDAD
+      ========================= */
+
+      const habitacionOcupada =
         await pool.query(
+
           `
-          SELECT
-            th.precio
+          SELECT r.*
+
+          FROM reserva r
+
+          INNER JOIN reserva_habitacion rh
+          ON rh.id_reserva = r.id_reserva
+
+          WHERE rh.id_hotel = $1
+
+          AND rh.num_hab = $2
+
+          AND r.estado != 'cancelada'
+
+          AND (
+
+            r.fecha_inicio <= $4
+
+            AND r.fecha_fin >= $3
+
+          )
+          `,
+          [
+            id_hotel,
+            num_hab,
+            fecha_inicio,
+            fecha_fin
+          ]
+        );
+
+      if (
+        habitacionOcupada.rows.length > 0
+      ) {
+
+        return res.status(400).json({
+
+          message:
+            "Habitación no disponible para esas fechas"
+
+        });
+
+      }
+
+      /* =========================
+         OBTENER PRECIO HABITACION
+      ========================= */
+
+      const habitacion =
+        await pool.query(
+
+          `
+          SELECT th.precio
 
           FROM habitacion h
 
           INNER JOIN tipo_habitacion th
-          ON h.id_tipo_hab =
-             th.id_tip_hab
+          ON h.id_tipo_hab = th.id_tip_hab
 
           WHERE h.id_hotel = $1
           AND h.num_hab = $2
@@ -612,45 +700,63 @@ router.post(
         );
 
       if (
-        room.rows.length === 0
+        habitacion.rows.length === 0
       ) {
 
         return res.status(404).json({
+
           message:
             "Habitación no encontrada"
+
         });
 
       }
 
       let total =
         Number(
-          room.rows[0].precio
+          habitacion.rows[0].precio
         );
+
+      /* =========================
+         SUMAR EXTRAS
+      ========================= */
 
       if (
         extras &&
         extras.length > 0
       ) {
 
-        const extrasQuery =
+        const extrasDB =
           await pool.query(
+
             `
-            SELECT SUM(precio) AS total
+            SELECT precio
+
             FROM extras
+
             WHERE id_extra = ANY($1)
             `,
             [extras]
           );
 
-        total += Number(
-          extrasQuery.rows[0]
-            .total || 0
+        extrasDB.rows.forEach(
+          (extra) => {
+
+            total +=
+              Number(extra.precio);
+
+          }
         );
 
       }
 
+      /* =========================
+         CREAR RESERVA
+      ========================= */
+
       const reserva =
         await pool.query(
+
           `
           INSERT INTO reserva
           (
@@ -661,14 +767,7 @@ router.post(
             id_usuario
           )
 
-          VALUES
-          (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5
-          )
+          VALUES ($1, $2, $3, $4, $5)
 
           RETURNING *
           `,
@@ -681,7 +780,15 @@ router.post(
           ]
         );
 
+      const nuevaReserva =
+        reserva.rows[0];
+
+      /* =========================
+         RELACION HABITACION
+      ========================= */
+
       await pool.query(
+
         `
         INSERT INTO reserva_habitacion
         (
@@ -690,48 +797,42 @@ router.post(
           num_hab
         )
 
-        VALUES
-        (
-          $1,
-          $2,
-          $3
-        )
+        VALUES ($1, $2, $3)
         `,
         [
-          reserva.rows[0]
-            .id_reserva,
-
+          nuevaReserva.id_reserva,
           id_hotel,
-
           num_hab
         ]
       );
+
+      /* =========================
+         RELACION EXTRAS
+      ========================= */
 
       if (
         extras &&
         extras.length > 0
       ) {
 
-        for (const id_extra of extras) {
+        for (
+          const id_extra of extras
+        ) {
 
           await pool.query(
+
             `
             INSERT INTO reserva_extra
             (
               id_reserva,
-              id_extra
+              id_extra,
+              cantidad
             )
 
-            VALUES
-            (
-              $1,
-              $2
-            )
+            VALUES ($1, $2, 1)
             `,
             [
-              reserva.rows[0]
-                .id_reserva,
-
+              nuevaReserva.id_reserva,
               id_extra
             ]
           );
@@ -740,18 +841,32 @@ router.post(
 
       }
 
-      res.status(201).json({
+      /* =========================
+         RESPUESTA
+      ========================= */
+
+      res.json({
+
         message:
-          "Reserva creada correctamente"
+          "Reserva creada correctamente",
+
+        reserva:
+          nuevaReserva
+
       });
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "ERROR CREANDO RESERVA:",
+        error
+      );
 
       res.status(500).json({
+
         message:
           "Error creando reserva"
+
       });
 
     }

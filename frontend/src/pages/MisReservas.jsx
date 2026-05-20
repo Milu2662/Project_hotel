@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState
+} from "react";
 
-import Navbar from "../components/Navbar";
+import Navbar
+  from "../components/Navbar";
 
-import api from "../services/api";
+import api
+  from "../services/api";
 
 import "../styles/MisReservas.css";
 
@@ -11,22 +16,41 @@ function MisReservas() {
   const [reservas, setReservas] =
     useState([]);
 
+  const [loading, setLoading] =
+    useState(true);
+
   const user =
     JSON.parse(
       localStorage.getItem("user")
     );
 
+  /* =========================
+     FETCH RESERVAS
+  ========================= */
+
   useEffect(() => {
+
+    if (!user) return;
 
     const fetchReservas =
       async () => {
 
         try {
 
+          console.log(
+            "USER:",
+            user
+          );
+
           const response =
             await api.get(
-              `/reservations/user/${user.id_usuario}`
+              `/my-reservations/${user.id_usuario}`
             );
+
+          console.log(
+            "RESERVAS:",
+            response.data
+          );
 
           setReservas(
             response.data
@@ -34,22 +58,25 @@ function MisReservas() {
 
         } catch (error) {
 
-          console.error(error);
+          console.error(
+            "ERROR:",
+            error
+          );
+
+        } finally {
+
+          setLoading(false);
 
         }
 
       };
 
-    if (user) {
+    fetchReservas();
 
-      fetchReservas();
-
-    }
-
-  }, [user]);
+  }, []);
 
   /* =========================
-     CANCELAR
+     CANCELAR RESERVA
   ========================= */
 
   const cancelReservation =
@@ -107,94 +134,179 @@ function MisReservas() {
           Mis Reservas
         </h1>
 
-        <div className="reservas-grid">
+        {/* LOADING */}
 
-          {reservas.map(
-            (reserva, index) => (
+        {loading ? (
 
-              <div
-                key={index}
-                className="reserva-card"
-              >
+          <p className="empty-message">
 
-                <h2>
-                  Reserva #
-                  {reserva.id_reserva}
-                </h2>
+            Cargando reservas...
 
-                <p>
+          </p>
 
-                  📅 Inicio:
-                  {" "}
-                  {reserva.fecha_inicio?.slice(
-                    0,
-                    10
-                  )}
+        ) : reservas.length === 0 ? (
 
-                </p>
+          /* SIN RESERVAS */
 
-                <p>
+          <p className="empty-message">
 
-                  📅 Fin:
-                  {" "}
-                  {reserva.fecha_fin?.slice(
-                    0,
-                    10
-                  )}
+            No tienes reservas.
 
-                </p>
+          </p>
 
-                <p>
+        ) : (
 
-                  💰 Total:
-                  {" "}
-                  $
-                  {Number(
-                    reserva.total
-                  ).toLocaleString()}
+          <div className="reservas-grid">
 
-                </p>
+            {reservas.map(
+              (reserva) => (
 
-                <p>
+                <div
+                  key={
+                    reserva.id_reserva
+                  }
+                  className="reserva-card"
+                >
 
-                  Estado:
-                  {" "}
+                  <h2>
 
-                  <strong>
+                    Reserva #
 
-                    {reserva.estado}
+                    {
+                      reserva.id_reserva
+                    }
 
-                  </strong>
+                  </h2>
 
-                </p>
+                  <p>
 
-                {/* BOTÓN */}
+                    🏨 Hotel:
 
-                {reserva.estado !==
-                  "cancelada" && (
+                    {" "}
 
-                  <button
-                    className="cancel-btn"
-                    onClick={() =>
-                      cancelReservation(
-                        reserva.id_reserva
+                    <strong>
+
+                      {
+                        reserva.hotel
+                      }
+
+                    </strong>
+
+                  </p>
+
+                  <p>
+
+                    🚪 Habitación:
+
+                    {" "}
+
+                    {
+                      reserva.num_hab
+                    }
+
+                  </p>
+
+                  <p>
+
+                    📅 Inicio:
+
+                    {" "}
+
+                    {
+                      reserva.fecha_inicio?.slice(
+                        0,
+                        10
                       )
                     }
-                  >
 
-                    Cancelar reserva
+                  </p>
 
-                  </button>
+                  <p>
 
-                )}
+                    📅 Fin:
 
-              </div>
+                    {" "}
 
-            )
-          )}
+                    {
+                      reserva.fecha_fin?.slice(
+                        0,
+                        10
+                      )
+                    }
 
+                  </p>
 
-        </div>
+                  <p>
+
+                    🎁 Extras:
+
+                    {" "}
+
+                    {
+                      reserva.extras ||
+                      "Sin extras"
+                    }
+
+                  </p>
+
+                  <p>
+
+                    💰 Total:
+
+                    {" "}
+
+                    $
+
+                    {
+                      Number(
+                        reserva.total
+                      ).toLocaleString()
+                    }
+
+                  </p>
+
+                  <p>
+
+                    Estado:
+
+                    {" "}
+
+                    <strong>
+
+                      {
+                        reserva.estado
+                      }
+
+                    </strong>
+
+                  </p>
+
+                  {reserva.estado !==
+                    "cancelada" && (
+
+                    <button
+                      className="cancel-btn"
+                      onClick={() =>
+                        cancelReservation(
+                          reserva.id_reserva
+                        )
+                      }
+                    >
+
+                      Cancelar reserva
+
+                    </button>
+
+                  )}
+
+                </div>
+
+              )
+            )}
+
+          </div>
+
+        )}
 
       </div>
 

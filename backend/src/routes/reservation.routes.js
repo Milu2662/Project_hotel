@@ -25,7 +25,6 @@ router.post(
         extras
       } = req.body;
 
-
       /* =========================
          VALIDAR CAMPOS
       ========================= */
@@ -39,8 +38,10 @@ router.post(
       ) {
 
         return res.status(400).json({
+
           message:
             "Todos los campos son obligatorios",
+
         });
 
       }
@@ -60,8 +61,10 @@ router.post(
       ) {
 
         return res.status(400).json({
+
           message:
             "La fecha final debe ser mayor",
+
         });
 
       }
@@ -104,8 +107,10 @@ router.post(
       ) {
 
         return res.status(400).json({
+
           message:
             "La habitación ya está reservada"
+
         });
 
       }
@@ -140,8 +145,10 @@ router.post(
       ) {
 
         return res.status(404).json({
+
           message:
             "Habitación no encontrada",
+
         });
 
       }
@@ -179,7 +186,7 @@ router.post(
           extras.reduce(
             (acc, extra) =>
               acc +
-              Number(extra.precio),
+              Number(extra.precio || 0),
             0
           );
 
@@ -234,91 +241,6 @@ router.post(
       const idReserva =
         reserva.rows[0]
           .id_reserva;
-
-      /* =========================
-        MIS RESERVAS
-      ========================= */
-
-      router.get(
-        "/my-reservations/:id",
-
-        async (req, res) => {
-
-          try {
-
-            const { id } =
-              req.params;
-
-            const reservas =
-              await pool.query(
-                `
-                SELECT
-                  r.id_reserva,
-                  r.fecha_inicio,
-                  r.fecha_fin,
-                  r.total,
-                  r.estado,
-
-                  h.nombre
-                  AS hotel,
-
-                  rh.num_hab,
-
-                  STRING_AGG(
-                    e.nombre,
-                    ', '
-                  ) AS extras
-
-                FROM reserva r
-
-                INNER JOIN reserva_habitacion rh
-                ON r.id_reserva =
-                  rh.id_reserva
-
-                INNER JOIN hotel h
-                ON rh.id_hotel =
-                  h.id_hotel
-
-                LEFT JOIN reserva_extra re
-                ON r.id_reserva =
-                  re.id_reserva
-
-                LEFT JOIN extras e
-                ON re.id_extra =
-                  e.id_extra
-
-                WHERE r.id_usuario = $1
-
-                GROUP BY
-                  r.id_reserva,
-                  h.nombre,
-                  rh.num_hab
-
-                ORDER BY
-                  r.id_reserva DESC
-                `,
-                [id]
-              );
-
-            res.json(
-              reservas.rows
-            );
-
-          } catch (error) {
-
-            console.error(error);
-
-            res.status(500).json({
-
-              message:
-                "Error obteniendo reservas"
-
-            });
-
-          }
-
-        }
-      );        
 
       /* =========================
          RESERVA HABITACION
@@ -413,6 +335,91 @@ router.post(
 
         error:
           error.message
+
+      });
+
+    }
+
+  }
+);
+
+/* =========================
+   MIS RESERVAS
+========================= */
+
+router.get(
+  "/my-reservations/:id",
+
+  async (req, res) => {
+
+    try {
+
+      const { id } =
+        req.params;
+
+      const reservas =
+        await pool.query(
+          `
+          SELECT
+            r.id_reserva,
+            r.fecha_inicio,
+            r.fecha_fin,
+            r.total,
+            r.estado,
+
+            h.nombre
+            AS hotel,
+
+            rh.num_hab,
+
+            STRING_AGG(
+              e.nombre,
+              ', '
+            ) AS extras
+
+          FROM reserva r
+
+          INNER JOIN reserva_habitacion rh
+          ON r.id_reserva =
+            rh.id_reserva
+
+          INNER JOIN hotel h
+          ON rh.id_hotel =
+            h.id_hotel
+
+          LEFT JOIN reserva_extra re
+          ON r.id_reserva =
+            re.id_reserva
+
+          LEFT JOIN extras e
+          ON re.id_extra =
+            e.id_extra
+
+          WHERE r.id_usuario = $1
+
+          GROUP BY
+            r.id_reserva,
+            h.nombre,
+            rh.num_hab
+
+          ORDER BY
+            r.id_reserva DESC
+          `,
+          [id]
+        );
+
+      res.json(
+        reservas.rows
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+
+        message:
+          "Error obteniendo reservas"
 
       });
 

@@ -3,11 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
+
 import "../styles/Auth.css";
 
-function Register() {
+function Registro() {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const [formData, setFormData] =
     useState({
@@ -20,47 +22,53 @@ function Register() {
 
     });
 
-  const handleChange = (e) => {
+  const handleChange =
+    (e) => {
 
-    setFormData({
+      setFormData({
 
-      ...formData,
+        ...formData,
 
-      [e.target.name]:
-        e.target.value,
+        [e.target.name]:
+          e.target.value,
 
-    });
+      });
 
-  };
+    };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =
+    async (e) => {
 
-    e.preventDefault();
+      e.preventDefault();
 
-    try {
+      try {
 
-      await api.post(
-        "/auth/register",
-        formData
-      );
+        await api.post(
+          "/auth/register",
+          formData
+        );
 
-      alert(
-        "Cuenta creada correctamente"
-      );
+        alert(
+          "Cuenta creada correctamente"
+        );
 
-      navigate("/login");
+        navigate("/login");
 
-    } catch (error) {
+      } catch (error) {
 
-      console.error(error);
+        console.error(error);
 
-      alert(
-        error.response.data.message
-      );
+        alert(
 
-    }
+          error.response?.data?.message ||
 
-  };
+          "Error registrando usuario"
+
+        );
+
+      }
+
+    };
 
   return (
 
@@ -71,44 +79,68 @@ function Register() {
         onSubmit={handleSubmit}
       >
 
-        <h1>Crear cuenta</h1>
+        <h1>
+          Crear cuenta
+        </h1>
 
         <input
           type="text"
           name="nombre_completo"
           placeholder="Nombre completo"
+          value={
+            formData.nombre_completo
+          }
           onChange={handleChange}
+          required
         />
 
         <input
           type="email"
           name="correo"
           placeholder="Correo"
+          value={
+            formData.correo
+          }
           onChange={handleChange}
+          required
         />
 
         <input
           type="text"
           name="usuario"
           placeholder="Usuario"
+          value={
+            formData.usuario
+          }
           onChange={handleChange}
+          required
         />
 
         <input
           type="date"
           name="fecha_nacimiento"
+          value={
+            formData.fecha_nacimiento
+          }
           onChange={handleChange}
+          required
         />
 
         <input
           type="password"
           name="password"
           placeholder="Contraseña"
+          value={
+            formData.password
+          }
           onChange={handleChange}
+          required
         />
 
         <button type="submit">
+
           Registrarse
+
         </button>
 
       </form>
@@ -119,4 +151,4 @@ function Register() {
 
 }
 
-export default Register;
+export default Registro;
