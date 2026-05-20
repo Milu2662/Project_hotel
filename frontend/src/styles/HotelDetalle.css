@@ -1,0 +1,298 @@
+*{
+  box-sizing:border-box;
+}
+
+.hotel-detail{
+  min-height:100vh;
+  background:#f5f5f5;
+}
+
+/* HERO */
+
+.hotel-hero{
+  position:relative;
+  width:100%;
+  height:500px;
+  overflow:hidden;
+}
+
+.hotel-hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  display:flex;
+  align-items:flex-end;
+}
+
+.hero-content{
+  color:white;
+  padding:60px;
+}
+
+.hero-content h1{
+  font-size:60px;
+  margin-bottom:15px;
+}
+
+.hero-content p{
+  font-size:24px;
+}
+
+/* GALERIA */
+
+.gallery-section{
+  max-width:1200px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+.gallery-grid{
+  display:flex;
+  gap:20px;
+}
+
+.main-image{
+  flex:2;
+}
+
+.main-image img{
+  width:100%;
+  height:500px;
+  object-fit:cover;
+  border-radius:20px;
+  display:block;
+}
+
+.side-images{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.side-images img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  border-radius:20px;
+  display:block;
+}
+
+/* INFO */
+
+.hotel-info-section{
+  max-width:1200px;
+  margin:auto;
+  padding:60px 20px;
+  display:grid;
+  grid-template-columns:1fr 400px;
+  gap:40px;
+}
+
+.hotel-description{
+  background:white;
+  padding:40px;
+  border-radius:20px;
+}
+
+.hotel-description h2{
+  font-size:38px;
+  margin-bottom:20px;
+}
+
+.hotel-description p{
+  line-height:1.8;
+  color:#4b5563;
+  font-size:18px;
+}
+
+.hotel-location{
+  margin-top:30px;
+}
+
+.hotel-location p{
+  margin-bottom:10px;
+  font-size:18px;
+}
+
+/* CARD RESERVA */
+
+.booking-card{
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  height:fit-content;
+}
+
+.booking-card h3{
+  font-size:30px;
+  margin-bottom:25px;
+}
+
+.booking-card input,
+.booking-card select{
+  width:100%;
+  padding:16px;
+  margin-bottom:20px;
+  border:1px solid #d1d5db;
+  border-radius:12px;
+  font-size:16px;
+}
+
+.booking-button{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:14px;
+  background:#0f172a;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.booking-button:hover{
+  background:#1e293b;
+}
+
+/* HABITACIONES */
+
+.rooms-section{
+  max-width:1300px;
+  margin:auto;
+  padding:80px 20px;
+}
+
+.rooms-section h2{
+  font-size:48px;
+  margin-bottom:50px;
+  color:#0f172a;
+}
+
+.rooms-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
+  gap:35px;
+}
+
+.room-card{
+  background:white;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.room-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.15);
+}
+
+.room-card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  display:block;
+}
+
+.room-content{
+  padding:30px;
+}
+
+.room-content h3{
+  font-size:32px;
+  margin-bottom:20px;
+  color:#0f172a;
+}
+
+.room-features{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:25px;
+}
+
+.room-features p{
+  color:#475569;
+  font-size:18px;
+}
+
+.room-price{
+  font-size:38px;
+  font-weight:bold;
+  color:#0f172a;
+  margin-bottom:25px;
+}
+
+.room-button{
+  width:100%;
+  border:none;
+  padding:18px;
+  border-radius:14px;
+  background:#0f172a;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.room-button:hover{
+  background:#1e293b;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+  .gallery-grid{
+    flex-direction:column;
+  }
+
+  .hotel-info-section{
+    grid-template-columns:1fr;
+  }
+
+  .hero-content{
+    padding:30px;
+  }
+
+  .hero-content h1{
+    font-size:40px;
+  }
+
+  .hero-content p{
+    font-size:20px;
+  }
+
+  .main-image img{
+    height:300px;
+  }
+
+  .rooms-section h2{
+    font-size:36px;
+  }
+
+  .rooms-grid{
+    grid-template-columns:1fr;
+  }
+
+  .total-price{
+  margin-bottom:20px;
+
+  font-size:28px;
+  font-weight:bold;
+
+  color:#0f172a;
+}
+
+}

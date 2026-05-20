@@ -1,0 +1,54 @@
+.admin-sidebar{
+  width:260px;
+  min-height:100vh;
+  background:#111827;
+
+  position:fixed;
+  left:0;
+  top:0;
+
+  padding:30px 20px;
+}
+
+.sidebar-top{
+  margin-bottom:50px;
+}
+
+.admin-logo{
+  color:white;
+  font-size:28px;
+  font-weight:bold;
+}
+
+.admin-menu{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.admin-link{
+  color:#d1d5db;
+  text-decoration:none;
+  padding:15px 18px;
+  border-radius:14px;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.admin-link:hover{
+  background:#1f2937;
+  color:white;
+}
+
+.admin-link.active{
+  background:#2563eb;
+  color:white;
+}
+
+@media(max-width:900px){
+
+  .admin-sidebar{
+    display:none;
+  }
+
+}

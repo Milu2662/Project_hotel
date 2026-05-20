@@ -1,0 +1,176 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial, sans-serif;
+  background:#f4f7fb;
+}
+
+.admin-layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.admin-sidebar{
+  width:260px;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:30px 20px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+}
+
+.admin-logo{
+  font-size:38px;
+  font-weight:bold;
+  margin-bottom:40px;
+}
+
+.admin-menu{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.admin-link{
+  color:white;
+  text-decoration:none;
+  padding:15px;
+  border-radius:14px;
+  transition:0.3s;
+  font-weight:bold;
+}
+
+.admin-link:hover{
+  background:#1e293b;
+}
+
+.admin-link.active{
+  background:#2563eb;
+}
+
+.logout-admin{
+  width:100%;
+  border:none;
+  background:#dc2626;
+  color:white;
+  padding:15px;
+  border-radius:14px;
+  font-size:16px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* MAIN */
+
+.admin-main{
+  flex:1;
+  margin-left:260px;
+  padding:50px;
+}
+
+.admin-header h1{
+  font-size:56px;
+  color:#0f172a;
+  margin-bottom:10px;
+}
+
+.admin-header p{
+  color:#64748b;
+  font-size:18px;
+}
+
+/* STATS */
+
+.admin-stats{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+.admin-card{
+  background:white;
+  padding:35px;
+  border-radius:24px;
+  box-shadow:
+    0 10px 30px rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+}
+
+.admin-card h2{
+  font-size:52px;
+  margin-bottom:15px;
+}
+
+.admin-card p{
+  color:#475569;
+  font-size:18px;
+}
+
+/* TABLE */
+
+.admin-table-container{
+  margin-top:50px;
+  background:white;
+  padding:35px;
+  border-radius:24px;
+  box-shadow:
+    0 10px 30px rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+}
+
+.admin-table{
+  width:100%;
+  margin-top:20px;
+  border-collapse:collapse;
+}
+
+.admin-table th,
+.admin-table td{
+  padding:20px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.admin-table th{
+  background:#f1f5f9;
+  text-align:left;
+}
+
+.admin-table a{
+  color:#2563eb;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+@media(max-width:900px){
+
+  .admin-sidebar{
+    display:none;
+  }
+
+  .admin-main{
+    margin-left:0;
+    padding:20px;
+  }
+
+}

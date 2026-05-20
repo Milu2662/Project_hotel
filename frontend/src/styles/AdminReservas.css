@@ -1,0 +1,183 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+.admin-page{
+  min-height:100vh;
+  background:#f4f7fb;
+}
+
+.admin-layout{
+  display:flex;
+}
+
+.admin-content{
+  flex:1;
+  margin-left:260px;
+  padding:40px;
+}
+
+.admin-topbar{
+  margin-bottom:35px;
+}
+
+.admin-topbar h1{
+  font-size:40px;
+  color:#111827;
+  margin-bottom:10px;
+}
+
+.admin-topbar p{
+  color:#6b7280;
+}
+
+/* FORM */
+
+.reserva-form{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+  gap:20px;
+
+  margin-bottom:50px;
+}
+
+.reserva-form select,
+.reserva-form input{
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  font-size:15px;
+}
+
+.reserva-form button{
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:15px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.reserva-form button:hover{
+  background:#1d4ed8;
+}
+
+/* TABLE */
+
+.reservas-table-container{
+  background:white;
+  border-radius:20px;
+  overflow-x:auto;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+}
+
+.reservas-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.reservas-table thead{
+  background:#111827;
+  color:white;
+}
+
+.reservas-table th,
+.reservas-table td{
+  padding:18px;
+  text-align:left;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.reservas-table tbody tr:hover{
+  background:#f9fafb;
+}
+
+/* BUTTON */
+
+.delete-btn{
+  background:#dc2626;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.delete-btn:hover{
+  background:#b91c1c;
+}
+
+/* EXTRAS */
+
+.extras-container{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:18px;
+}
+
+.extras-title{
+  font-size:20px;
+  margin-bottom:15px;
+  color:#111827;
+}
+
+.extras-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.extra-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  background:white;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+}
+
+.extra-item:hover{
+  border-color:#2563eb;
+}
+
+.extra-name{
+  font-weight:600;
+  color:#111827;
+}
+
+.extra-price{
+  color:#6b7280;
+  font-size:14px;
+}
+
+@media(max-width:900px){
+
+  .admin-content{
+    margin-left:0;
+    padding:20px;
+  }
+
+  .reserva-form{
+    grid-template-columns:1fr;
+  }
+
+}

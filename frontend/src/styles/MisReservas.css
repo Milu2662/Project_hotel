@@ -1,0 +1,91 @@
+*{
+  box-sizing:border-box;
+}
+
+.mis-reservas-page{
+  min-height:100vh;
+  background:#f5f7fb;
+}
+
+.mis-reservas-container{
+  max-width:1300px;
+  margin:auto;
+  padding:50px 20px;
+}
+
+.mis-reservas-container h1{
+  font-size:48px;
+  margin-bottom:40px;
+  color:#0f172a;
+}
+
+.reservas-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(350px,1fr));
+  gap:30px;
+}
+
+.reserva-card{
+  background:white;
+  border-radius:24px;
+  padding:30px;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.08);
+}
+
+.reserva-card h2{
+  font-size:30px;
+  margin-bottom:20px;
+  color:#0f172a;
+}
+
+.reserva-card p{
+  margin-bottom:14px;
+  color:#475569;
+  font-size:17px;
+}
+
+.estado{
+  font-weight:bold;
+  color:#2563eb;
+}
+
+.total{
+  margin-top:25px;
+  font-size:36px;
+  font-weight:bold;
+  color:#0f172a;
+}
+
+.cancel-btn{
+
+  width:100%;
+
+  margin-top:20px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:#dc2626;
+
+  color:white;
+
+  font-size:16px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+}
+
+.cancel-btn:hover{
+
+  background:#b91c1c;
+
+}
